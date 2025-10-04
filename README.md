@@ -39,3 +39,11 @@ project-enterprise-connect/
 5. Assign your phone number to **MainIVR**; set agent1 Available in CCP; make a test call.
 6. Capture screenshots and place them in `architecture/`.
 7. Publish `site/` to S3 + CloudFront and replace **CLOUDFRONT_URL** above.
+
+## 📦 Coming Soon
+S3 Call Recording Storage & Playback
+
+## 🔗 Built With Pride  
+Created with ❤️ by **Edward Thornton**  
+For the Enterpirse Mobility CX Technology Engineer Interview
+[GitHub Profile](https://github.com/RedLeopard) • [Portfolio](https://hireedwardthornton.click)  
