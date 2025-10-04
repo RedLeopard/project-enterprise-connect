@@ -6,7 +6,7 @@ A minimal Amazon Connect contact center with:
 - Real-time metrics for operations
 - Optional audit/orchestration via Lambda → DynamoDB
 
-  https://github.com/user-attachments/assets/a6376854-873a-4e53-a9f5-cfaff6f427cf
+![Enterprise Connect Architecture](https://github.com/user-attachments/assets/a6376854-873a-4e53-a9f5-cfaff6f427cf)
 
 ## Quick Links
 - **Live Project Page:** CLOUDFRONT_URL (replace after you publish)
