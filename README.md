@@ -9,8 +9,8 @@ A minimal Amazon Connect contact center with:
 ![Enterprise Connect Architecture](https://github.com/user-attachments/assets/a6376854-873a-4e53-a9f5-cfaff6f427cf)
 
 ## Quick Links
-- **Live Project Page:** CLOUDFRONT_URL (replace after you publish)
-- **Demo Video:** LINK_TO_VIDEO (optional)
+- **Live Project:** [Enterprise Connect Project](https://hireedwardthornton.click/enterprise-connect.html)
+- **Demo Video:** [Watch Demo](https://hireedwardthornton.click/assets/Video-Demo.mp4)
 - **Runbook:** [`docs/runbook.md`](docs/runbook.md)
 - **Troubleshooting:** [`docs/troubleshooting.md`](docs/troubleshooting.md)
 
@@ -28,7 +28,6 @@ project-enterprise-connect/
 │  └─ connect-arch.png        # Simple diagram (IVR → Queue → Agent)
 └─ site/
    ├─ index.html              # Portfolio page
-   └─ styles.css
 ```
 
 ## How to Reproduce
