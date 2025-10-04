@@ -1,0 +1,207 @@
+{
+  "Version": "2019-10-30",
+  "StartAction": "Entry",
+  "Metadata": {
+    "name": "MainIVR",
+    "description": "Main IVR with DTMF menu; Lambda only on Rentals/Fleet; fallback goes straight to Main queue",
+    "type": "contactFlow",
+    "status": "saved",
+    "hash": ""
+  },
+  "Actions": [
+    {
+      "Identifier": "Entry",
+      "Type": "Entry",
+      "Transitions": {
+        "NextAction": "Menu"
+      }
+    },
+    {
+      "Identifier": "Menu",
+      "Type": "GetParticipantInput",
+      "Parameters": {
+        "InputType": "DTMF",
+        "MinDigits": "1",
+        "MaxDigits": "1",
+        "TimeoutSeconds": "5",
+        "Text": "Welcome to Enterprise Mobility. Press 1 for Rentals, or 2 for Fleet Support.",
+        "TextToSpeechType": "text"
+      },
+      "Transitions": {
+        "Conditions": [
+          {
+            "NextAction": "SetDeptRentals",
+            "Condition": {
+              "Operator": "Equals",
+              "Operands": [
+                "1"
+              ]
+            }
+          },
+          {
+            "NextAction": "SetDeptFleet",
+            "Condition": {
+              "Operator": "Equals",
+              "Operands": [
+                "2"
+              ]
+            }
+          }
+        ],
+        "NextAction": "SetWorkingQueue_Main",
+        "Error": "SetWorkingQueue_Main",
+        "Timeout": "SetWorkingQueue_Main"
+      }
+    },
+    {
+      "Identifier": "SetDeptRentals",
+      "Type": "UpdateContactAttributes",
+      "Parameters": {
+        "Attributes": [
+          {
+            "Key": "Dept",
+            "Value": "Rentals",
+            "Namespace": "Contact"
+          }
+        ]
+      },
+      "Transitions": {
+        "NextAction": "InvokeLambda_Rentals"
+      }
+    },
+    {
+      "Identifier": "InvokeLambda_Rentals",
+      "Type": "InvokeLambdaFunction",
+      "Parameters": {
+        "FunctionArn": "arn:aws:lambda:us-east-1:605383993555:function:connect-call-audit",
+        "RequestJSON": "{\"ContactId\":\"{Contact.Attribute:ContactId}\",\"Dept\":\"{Attribute:Dept}\",\"Caller\":\"{Customer Number}\",\"Timestamp\":\"{CurrentTime}\"}"
+      },
+      "Transitions": {
+        "NextAction": "SetWorkingQueue_Rentals",
+        "Errors": [
+          {
+            "NextAction": "SetWorkingQueue_Rentals",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Identifier": "SetWorkingQueue_Rentals",
+      "Type": "UpdateContactTargetQueue",
+      "Parameters": {
+        "QueueId": "arn:aws:connect:us-east-1:605383993555:instance/f06ec3c3-3254-46b5-88c6-02bbbfef8132/queue/250c10c8-91e3-4d3e-9b11-3f9fd07d9627"
+      },
+      "Transitions": {
+        "NextAction": "TransferToQueue_Rentals",
+        "Errors": [
+          {
+            "NextAction": "Disconnect",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Identifier": "TransferToQueue_Rentals",
+      "Type": "TransferContactToQueue",
+      "Parameters": {},
+      "Transitions": {
+        "NextAction": "Disconnect",
+        "AtCapacity": "Disconnect",
+        "Error": "Disconnect"
+      }
+    },
+    {
+      "Identifier": "SetDeptFleet",
+      "Type": "UpdateContactAttributes",
+      "Parameters": {
+        "Attributes": [
+          {
+            "Key": "Dept",
+            "Value": "Fleet",
+            "Namespace": "Contact"
+          }
+        ]
+      },
+      "Transitions": {
+        "NextAction": "InvokeLambda_Fleet"
+      }
+    },
+    {
+      "Identifier": "InvokeLambda_Fleet",
+      "Type": "InvokeLambdaFunction",
+      "Parameters": {
+        "FunctionArn": "arn:aws:lambda:us-east-1:605383993555:function:connect-call-audit",
+        "RequestJSON": "{\"ContactId\":\"{Contact.Attribute:ContactId}\",\"Dept\":\"{Attribute:Dept}\",\"Caller\":\"{Customer Number}\",\"Timestamp\":\"{CurrentTime}\"}"
+      },
+      "Transitions": {
+        "NextAction": "SetWorkingQueue_Fleet",
+        "Errors": [
+          {
+            "NextAction": "SetWorkingQueue_Fleet",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Identifier": "SetWorkingQueue_Fleet",
+      "Type": "UpdateContactTargetQueue",
+      "Parameters": {
+        "QueueId": "arn:aws:connect:us-east-1:605383993555:instance/f06ec3c3-3254-46b5-88c6-02bbbfef8132/queue/250c10c8-91e3-4d3e-9b11-3f9fd07d9627"
+      },
+      "Transitions": {
+        "NextAction": "TransferToQueue_Fleet",
+        "Errors": [
+          {
+            "NextAction": "Disconnect",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Identifier": "TransferToQueue_Fleet",
+      "Type": "TransferContactToQueue",
+      "Parameters": {},
+      "Transitions": {
+        "NextAction": "Disconnect",
+        "AtCapacity": "Disconnect",
+        "Error": "Disconnect"
+      }
+    },
+    {
+      "Identifier": "SetWorkingQueue_Main",
+      "Type": "UpdateContactTargetQueue",
+      "Parameters": {
+        "QueueId": "arn:aws:connect:us-east-1:605383993555:instance/f06ec3c3-3254-46b5-88c6-02bbbfef8132/queue/250c10c8-91e3-4d3e-9b11-3f9fd07d9627"
+      },
+      "Transitions": {
+        "NextAction": "TransferToQueue_Main",
+        "Errors": [
+          {
+            "NextAction": "Disconnect",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Identifier": "TransferToQueue_Main",
+      "Type": "TransferContactToQueue",
+      "Parameters": {},
+      "Transitions": {
+        "NextAction": "Disconnect",
+        "AtCapacity": "Disconnect",
+        "Error": "Disconnect"
+      }
+    },
+    {
+      "Identifier": "Disconnect",
+      "Type": "DisconnectParticipant",
+      "Parameters": {},
+      "Transitions": {}
+    }
+  ]
+}
