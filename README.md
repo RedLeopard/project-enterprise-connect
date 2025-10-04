@@ -10,7 +10,7 @@ A minimal Amazon Connect contact center with:
 
 ## Quick Links
 - **Live Project:** [Enterprise Connect Project](https://hireedwardthornton.click/enterprise-connect.html)
-- **Demo Video:** [Watch Demo](https://hireedwardthornton.click/assets/Video-Demo.mp4)
+- **Demo Video:** [Watch Demo](https://youtu.be/k81-uUxNWHs))
 - **Runbook:** [`docs/runbook.md`](docs/runbook.md)
 - **Troubleshooting:** [`docs/troubleshooting.md`](docs/troubleshooting.md)
 
