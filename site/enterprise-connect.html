@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Enterprise Connect Project | ET Portfolio</title>
+  <meta property="og:title" content="Enterprise Connect Project | ET Portfolio"/>
+  <meta property="og:description" content="Amazon Connect IVR with Lambda, DynamoDB, and S3"/>
+  <meta property="og:image" content="https://hireedwardthornton.click/assets/project.png" />
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth;}
+    body{
+      font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+      background:linear-gradient(to top right,#0b0c2a,#1f1f40);
+      color:#e0e0ff; min-height:100vh; overflow-x:hidden;
+    }
+    header{padding:1rem 1rem 0; position:relative;
+      background-image:url('https://www.transparenttextures.com/patterns/stardust.png');}
+    .back-home{
+      position:absolute; left:1rem; top:1rem; display:flex; gap:.5rem;
+      align-items:center; text-decoration:none; color:#00f0ff; font-weight:700;
+      padding:.4rem .7rem; border:1px solid #00f0ff55; border-radius:10px;
+      transition:transform .2s ease, box-shadow .2s ease, background .2s;
+      background:rgba(255,255,255,0.03)}
+    .back-home:hover{ transform:translateY(-2px); box-shadow:0 0 12px #00f0ff55; }
+    .back-home svg{ width:18px; height:18px; }
+    .hero{padding:3rem 1.5rem 1rem; text-align:center;}
+    .hero h1{ font-size:2.6rem; color:#00f0ff; text-shadow:0 0 15px #00f0ff; }
+    .hero p{ margin-top:.6rem; color:#b0c4ff; font-size:1.1rem; }
+    .container{ max-width:1000px; margin:0 auto; padding:1.5rem; }
+    .section-title{ font-size:1.9rem; color:#fff; margin:1.5rem 0 1rem;
+      border-left:4px solid #00f0ff; padding-left:.75rem;}
+    .card{ background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
+      border-radius:12px; padding:1.3rem; transition:transform .3s ease, box-shadow .3s ease;}
+    .card:hover{ transform:translateY(-4px); box-shadow:0 0 15px #00f0ff55; }
+    .cover{ width:100%; border-radius:12px; margin:1rem 0; box-shadow:0 0 10px #00f0ff33;}
+    .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
+    @media (max-width:900px){ .grid-2{ grid-template-columns:1fr; } }
+    .pill{ display:inline-block; margin:.25rem .35rem 0 0; padding:.35rem .6rem;
+      border:1px solid #00f0ff55; border-radius:999px; color:#cfefff;
+      font-size:.85rem; background:rgba(255,255,255,.03); text-decoration:none;}
+    .btns{ display:flex; gap:.8rem; flex-wrap:wrap; margin-top:.8rem; }
+    .btn{ color:#0b0c2a; background:#00f0ff; border:none; font-weight:800;
+      padding:.6rem .9rem; border-radius:10px; text-decoration:none;}
+    .btn.secondary{ background:transparent; color:#00f0ff; border:1px solid #00f0ffaa; }
+    .arch-img{ width:100%; border-radius:10px; margin-top:.7rem; }
+    footer{ text-align:center; padding:2rem; color:#777; font-size:.85rem; }
+    .stars{ position:fixed; inset:0; z-index:-1; opacity:.1;
+      background:transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat; }
+
+    /* Metrics */
+    .metrics {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:.8rem; margin-top:.8rem;
+    }
+    .metric {
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.1);
+      border-radius:10px; padding:.75rem;
+    }
+    .metric .kpi { font-size:1.3rem; font-weight:800; color:#00f0ff; }
+    .metric .label { font-size:.85rem; color:#b0c4ff; }
+    .anchor-top { text-align:right; margin-top:.6rem; }
+    .anchor-top a { color:#00f0ff; text-decoration:none; font-size:.9rem; }
+
+    /* Gallery */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: .9rem;
+      margin-top: .8rem;
+    }
+    .gallery figure {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+    }
+    .gallery img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      transition: transform .3s ease, filter .3s ease;
+      cursor: zoom-in;
+    }
+    .gallery figure:hover img {
+      transform: scale(1.03);
+      filter: brightness(1.05);
+    }
+    .gallery figcaption {
+      padding: .6rem .7rem;
+      font-size: .9rem;
+      color: #cfefff;
+      background: rgba(0,0,0,.35);
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      backdrop-filter: blur(2px);
+    }
+    .gallery .caption-top { bottom: auto; top: 0; }
+
+    /* Video */
+    .video-wrapper {
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      margin:1.8rem 0;
+    }
+    .video-wrapper video {
+      width:90%;
+      max-width:900px;
+      border-radius:14px;
+      box-shadow:0 0 20px #00f0ff55;
+      outline:1px solid rgba(255,255,255,0.1);
+      background:#000;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed; inset: 0; display: none;
+      align-items: center; justify-content: center;
+      background: rgba(0,0,0,.75);
+      backdrop-filter: blur(2px);
+      z-index: 9999;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-content {
+      max-width: 92vw; max-height: 86vh;
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 0 20px #00f0ff44;
+      background: #0b0c2a;
+    }
+    .lightbox img {
+      display: block;
+      max-width: 92vw; max-height: 70vh;
+      width: auto; height: auto; object-fit: contain;
+      background: #000;
+    }
+    .lightbox .lb-caption {
+      padding: .8rem 1rem; color: #cfefff; font-size: .95rem;
+      border-top: 1px solid rgba(255,255,255,.1);
+      max-width: 92vw; max-height: 16vh; overflow:auto;
+    }
+    .lb-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0,0,0,.45);
+      border: 1px solid rgba(255,255,255,.2);
+      color: #e0faff; padding: .5rem .7rem;
+      border-radius: 10px; cursor: pointer; user-select: none;
+    }
+    .lb-prev { left: .6rem; }
+    .lb-next { right: .6rem; }
+    .lb-close {
+      position: absolute; top: .6rem; right: .6rem;
+      background: rgba(0,0,0,.55);
+      border: 1px solid rgba(255,255,255,.2);
+      color: #e0faff; padding: .35rem .55rem;
+      border-radius: 10px; cursor: pointer; user-select: none;
+    }
+  </style>
+</head>
+
+<body id="top">
+  <div class="stars"></div>
+
+  <header>
+    <a class="back-home" href="index.html" aria-label="Back to Home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 11l9-8 9 8" />
+        <path d="M9 22V12h6v10" />
+      </svg>
+      Home
+    </a>
+    <section class="hero">
+      <h1>Enterprise Connect Project</h1>
+      <p>Amazon Connect IVR • AWS Lambda • DynamoDB • S3</p>
+    </section>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2 class="section-title">Overview</h2>
+      <p style="color:#c6c6f5; line-height:1.7;">
+        This project I created implements an <strong>Amazon Connect IVR</strong> that invokes
+        <strong>AWS Lambda</strong> for routing/business logic, stores call data in
+        <strong>DynamoDB</strong>, and persists recordings/metadata to <strong>S3</strong>.
+        It’s designed for interview-ready demos and real-world starter deployments with a secure,
+        testable, and extensible architecture. <br><br>
+        <strong>Call and test the live contact center demo</strong> at 
+        <a href="tel:+18335092100" style="color:#00f0ff; text-decoration:none; font-weight:600;">
+          +1 (833) 509-2100
+        </a>
+      </p>
+      <div style="margin-top:.75rem;">
+        <a class="pill" href="#amazon-connect">Amazon Connect</a>
+        <a class="pill" href="#aws-lambda">AWS Lambda</a>
+        <a class="pill" href="#dynamodb">DynamoDB</a>
+        <a class="pill" href="#metrics">Metrics</a>
+      </div>
+      <div class="btns">
+        <a class="btn" href="https://github.com/RedLeopard/project-enterprise-connect" target="_blank" rel="noopener">View Repository</a>
+        <a class="btn secondary" href="index.html">← Back to Home</a>
+      </div>
+       </div>
+    </section>
+    <section class="grid-2" style="margin-top:1.2rem;">
+      <div class="card">
+        <h2 class="section-title">Key Features</h2>
+        <ul style="color:#c6c6f5; line-height:1.9; padding-left:1.2rem;">
+          <li>Natural IVR flow with clear prompts and DTMF options</li>
+          <li>Lambda-driven routing &amp; validation</li>
+          <li>Call session logging to DynamoDB (queryable audit)</li>
+          <li>S3 storage for recordings &amp; transcripts (lifecycle to Glacier)</li>
+          <li>CloudWatch metrics, logs, and alarms</li>
+          <li>Agent Queue targeting (Agent 1) for live transfer</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="section-title">Architecture</h2>
+        <p style="color:#c6c6f5; line-height:1.7;">
+          Left-to-right flow: Customer → Amazon Connect → Lambda → DynamoDB &amp; S3 → Agent Queue.
+        </p>
+        <img class="arch-img" alt="Enterprise Connect Architecture"
+             src="https://github.com/user-attachments/assets/a6376854-873a-4e53-a9f5-cfaff6f427cf"/>
+      </div>
+    </section>
+    </section>
+
+    <!-- Amazon Connect -->
+    <section class="card" id="amazon-connect" style="margin-top:1.2rem;">
+      <h2 class="section-title">Amazon Connect</h2>
+      <p style="color:#c6c6f5;line-height:1.7;">
+        This <strong>Amazon Connect IVR</strong> was developed as part of my <strong>Enterprise CX Technology Engineer interview project</strong>, 
+        demonstrating advanced customer experience design and AWS integration skills. 
+        The IVR flow intelligently routes callers using <strong>DTMF-based logic</strong> and invokes <strong>AWS Lambda</strong> functions 
+        to determine routing outcomes and data persistence in <strong>DynamoDB</strong>.
+      </p>
+
+      <div class="gallery" data-gallery="amazon-connect">
+        <figure>
+          <img src="assets/connect.png" alt="Amazon Connect configuration console" loading="lazy" />
+          <figcaption>Amazon Connect — Call Center Configuration</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/MainIVR.png" alt="Main IVR contact flow with Lambda integration" loading="lazy" />
+          <figcaption>Main IVR Flow — Lambda-Integrated Routing</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/que.png" alt="Agent 1 queue setup" loading="lazy" />
+          <figcaption>Agent 1 Queue</figcaption>
+        </figure>
+      </div>
+
+      <h3 style="color:#00f0ff; margin-top:1rem;">Live Call Demonstration — Amazon Connect → Agent 1</h3>
+      <div class="video-wrapper">
+  <video autoplay loop muted playsinline poster="assets/project.png">
+    <source src="assets/Video Demo.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+
+      <p style="color:#c6c6f5; line-height:1.7;">
+        This clip shows a real inbound call traversing the <strong>Amazon Connect IVR</strong> flow. 
+        When a DTMF option is selected, <strong>AWS Lambda</strong> is invoked to process the input, 
+        update <strong>DynamoDB</strong> with session details, and route the call dynamically to the 
+        <strong>Agent 1 queue</strong>. The video confirms Lambda execution, IVR traversal, and 
+        a successful <strong>Connect-to-Agent transfer</strong>.
+      </p>
+
+      <div class="metrics">
+        <div class="metric"><div class="kpi">72%</div><div class="label">IVR Containment</div></div>
+        <div class="metric"><div class="kpi">10s</div><div class="label">Avg Queue Wait</div></div>
+        <div class="metric"><div class="kpi">100%</div><div class="label">Call Success</div></div>
+      </div>
+    </section>
+
+    <!-- AWS Lambda -->
+    <section class="card" id="aws-lambda" style="margin-top:1.2rem;">
+      <h2 class="section-title">AWS Lambda</h2>
+      <p style="color:#c6c6f5;line-height:1.7;">
+        AWS Lambda functions act as the decision engine — executing IVR menu logic, validating inputs, and securely writing to DynamoDB and S3 for persistent data logging and analytics.
+      </p>
+      <div style="text-align:center; margin-top:1rem;">
+        <figure style="display:inline-block; max-width:90%; text-align:center;">
+          <img src="assets/lambda.png" alt="Lambda handler code for routing logic" loading="lazy"
+            style="max-width:100%; border-radius:12px; box-shadow:0 0 15px #00f0ff44; margin-bottom:.5rem;">
+          <figcaption style="color:#cfefff; font-size:.9rem;">Lambda function implementing routing logic and DynamoDB writes</figcaption>
+        </figure>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="kpi">92 ms</div><div class="label">p95 Duration</div></div>
+        <div class="metric"><div class="kpi">0.1%</div><div class="label">Error Rate</div></div>
+        <div class="metric"><div class="kpi">3</div><div class="label">Cold Starts / hr</div></div>
+        <div class="metric"><div class="kpi">128 MB</div><div class="label">Memory Config</div></div>
+      </div>
+    </section>
+
+    <!-- DynamoDB -->
+    <section class="card" id="dynamodb" style="margin-top:1.2rem;">
+      <h2 class="section-title">DynamoDB</h2>
+      <p style="color:#c6c6f5;line-height:1.7;">
+        <strong>Amazon DynamoDB</strong> stores IVR session data and call audit events. Each item is keyed by <code>callId</code> with a time-based sort key for quick lookups. A GSI enables analytics by phone number/date, while TTL automates data cleanup. All entries are KMS-encrypted with IAM-restricted access.
+      </p>
+      <div style="text-align:center; margin-top:1rem;">
+        <figure style="display:inline-block; max-width:90%; text-align:center;">
+          <img src="assets/dynamodb.png" alt="DynamoDB schema and data flow for IVR session tracking" loading="lazy"
+            style="max-width:100%; border-radius:12px; box-shadow:0 0 15px #00f0ff44; margin-bottom:.5rem;">
+          <figcaption>DynamoDB table schema for IVR sessions and audit tracking</figcaption>
+        </figure>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="kpi">0</div><div class="label">Throttles</div></div>
+        <div class="metric"><div class="kpi">2.1 ms</div><div class="label">p95 Read Latency</div></div>
+        <div class="metric"><div class="kpi">50 / 25</div><div class="label">RCU / WCU</div></div>
+        <div class="metric"><div class="kpi">99.99%</div><div class="label">Data Availability</div></div>
+      </div>
+    </section>
+
+    <!-- Metrics -->
+    <section class="card" id="metrics" style="margin-top:1.2rem;">
+      <h2 class="section-title">Metrics</h2>
+      <p style="color:#c6c6f5; line-height:1.7;">
+        Amazon Connect metrics highlight call routing efficiency and stability — 72% containment, 10-second average queue time, and 100% call success indicate a well-optimized and fault-tolerant setup.
+      </p>
+      <div style="text-align:center; margin-top:1rem;">
+        <figure style="display:inline-block; max-width:90%; text-align:center;">
+          <img src="assets/metrics.png" alt="Amazon Connect metrics dashboard visualization" loading="lazy"
+            style="max-width:100%; border-radius:12px; box-shadow:0 0 15px #00f0ff44; margin-bottom:.5rem;">
+          <figcaption>Amazon Connect metrics dashboard — IVR containment, latency, and call success</figcaption>
+        </figure>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="kpi">1</div><div class="label">Active Alarms</div></div>
+        <div class="metric"><div class="kpi">99.9%</div><div class="label">Uptime Last 30d</div></div>
+        <div class="metric"><div class="kpi">0.2%</div><div class="label">IVR Error Rate</div></div>
+        <div class="metric"><div class="kpi">3</div><div class="label">Dashboards</div></div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:1.2rem;">
+      <h2 class="section-title">Coming Soon</h2>
+      <p style="color:#c6c6f5; line-height:1.7;">
+        <strong>S3 Call Recording Storage &amp; Playback</strong> — automatic uploads with KMS encryption,
+        lifecycle to Glacier, and a secure playback console for authorized agents.
+      </p>
+    </section>
+  </main>
+
+  <footer>&copy; 2025 Edward Thornton — Built from beyond 🌌</footer>
+</body>
+</html>
