@@ -27,7 +27,7 @@ project-enterprise-connect/
 │  ├─ main-ivr.png            # Flow canvas screenshot
 │  └─ connect-arch.png        # Simple diagram (IVR → Queue → Agent)
 └─ site/
-   ├─ index.html              # Portfolio page
+   ├─ enterprise-connect.html             # Portfolio page
 ```
 
 ## How to Reproduce
