@@ -44,5 +44,4 @@ S3 Call Recording Storage & Playback
 
 ## 🔗 Built With Pride  
 Created with ❤️ by **Edward Thornton**  
-For the Enterpirse Mobility CX Technology Engineer Interview
 [GitHub Profile](https://github.com/RedLeopard) • [Portfolio](https://hireedwardthornton.click)  
