@@ -1,207 +1,411 @@
 {
   "Version": "2019-10-30",
-  "StartAction": "Entry",
+  "StartAction": "IntroMenu",
   "Metadata": {
+    "entryPointPosition": {
+      "x": 40,
+      "y": 40
+    },
+    "ActionMetadata": {
+      "25421eb7-02c3-4872-9aaa-b49920a1c54b": {
+        "position": {
+          "x": 1547.2,
+          "y": -100
+        },
+        "parameters": {
+          "QueueId": {
+            "displayName": "SupportQueue"
+          }
+        },
+        "queue": {
+          "text": "SupportQueue"
+        }
+      },
+      "SetDeptRentals": {
+        "position": {
+          "x": 831.2,
+          "y": -195.2
+        },
+        "isFriendlyName": true,
+        "dynamicParams": []
+      },
+      "a76b80ca-94f1-4b23-af27-4e5819b5f074": {
+        "position": {
+          "x": 1513.6,
+          "y": 178.4
+        },
+        "parameters": {
+          "QueueId": {
+            "displayName": "SupportQueue"
+          }
+        },
+        "queue": {
+          "text": "SupportQueue"
+        }
+      },
+      "SetDeptFleet": {
+        "position": {
+          "x": 972.8,
+          "y": 138.4
+        },
+        "isFriendlyName": true,
+        "dynamicParams": []
+      },
+      "SetWorkingQueue_Main": {
+        "position": {
+          "x": 1540.8,
+          "y": 439.2
+        },
+        "isFriendlyName": true
+      },
+      "TransferToSupport_Rentals": {
+        "position": {
+          "x": 1881.6,
+          "y": -196
+        },
+        "isFriendlyName": true
+      },
+      "TransferToSupport_Fleet": {
+        "position": {
+          "x": 1892,
+          "y": 161.6
+        },
+        "isFriendlyName": true
+      },
+      "TransferToSupport_Main": {
+        "position": {
+          "x": 820.8,
+          "y": 510.4
+        },
+        "isFriendlyName": true
+      },
+      "DisconnectCall": {
+        "position": {
+          "x": 516.8,
+          "y": 804.8
+        }
+      },
+      "RepromptMenu": {
+        "position": {
+          "x": 740.8,
+          "y": 104.8
+        },
+        "isFriendlyName": true,
+        "conditionMetadata": [],
+        "countryCodePrefix": "+1"
+      },
+      "ErrorPrompt": {
+        "position": {
+          "x": 1867.2,
+          "y": 468
+        },
+        "isFriendlyName": true
+      },
+      "IntroMenu": {
+        "position": {
+          "x": 40,
+          "y": 120
+        },
+        "isFriendlyName": true,
+        "conditionMetadata": [],
+        "countryCodePrefix": "+1"
+      },
+      "Lamda Or Die": {
+        "position": {
+          "x": 508.8,
+          "y": 100.8
+        },
+        "isFriendlyName": true,
+        "parameters": {
+          "LambdaFunctionARN": {
+            "displayName": "arn:aws:lambda:us-east-1:605383993555:function:connect-call-audit"
+          }
+        },
+        "dynamicMetadata": {}
+      },
+      "S3 & Me": {
+        "position": {
+          "x": 269.6,
+          "y": 85.6
+        },
+        "isFriendlyName": true
+      }
+    },
+    "Annotations": [],
     "name": "MainIVR",
-    "description": "Main IVR with DTMF menu; Lambda only on Rentals/Fleet; fallback goes straight to Main queue",
+    "description": "Demonstration IVR for Enterprise Mobility interview (Edward Thornton). Clean menu, reprompt, safe fallbacks.",
     "type": "contactFlow",
-    "status": "saved",
-    "hash": ""
+    "status": "PUBLISHED",
+    "hash": {}
   },
   "Actions": [
     {
-      "Identifier": "Entry",
-      "Type": "Entry",
-      "Transitions": {
-        "NextAction": "Menu"
-      }
-    },
-    {
-      "Identifier": "Menu",
-      "Type": "GetParticipantInput",
       "Parameters": {
-        "InputType": "DTMF",
-        "MinDigits": "1",
-        "MaxDigits": "1",
-        "TimeoutSeconds": "5",
-        "Text": "Welcome to Enterprise Mobility. Press 1 for Rentals, or 2 for Fleet Support.",
-        "TextToSpeechType": "text"
+        "QueueId": "arn:aws:connect:us-east-1:605383993555:instance/f06ec3c3-3254-46b5-88c6-02bbbfef8132/queue/250c10c8-91e3-4d3e-9b11-3f9fd07d9627"
       },
+      "Identifier": "25421eb7-02c3-4872-9aaa-b49920a1c54b",
+      "Type": "UpdateContactTargetQueue",
       "Transitions": {
-        "Conditions": [
+        "NextAction": "TransferToSupport_Rentals",
+        "Errors": [
           {
-            "NextAction": "SetDeptRentals",
-            "Condition": {
-              "Operator": "Equals",
-              "Operands": [
-                "1"
-              ]
-            }
-          },
-          {
-            "NextAction": "SetDeptFleet",
-            "Condition": {
-              "Operator": "Equals",
-              "Operands": [
-                "2"
-              ]
-            }
+            "NextAction": "ErrorPrompt",
+            "ErrorType": "NoMatchingError"
           }
-        ],
-        "NextAction": "SetWorkingQueue_Main",
-        "Error": "SetWorkingQueue_Main",
-        "Timeout": "SetWorkingQueue_Main"
+        ]
       }
     },
     {
+      "Parameters": {
+        "Attributes": {
+          "Dept": "Rentals"
+        },
+        "TargetContact": "Current"
+      },
       "Identifier": "SetDeptRentals",
       "Type": "UpdateContactAttributes",
-      "Parameters": {
-        "Attributes": [
-          {
-            "Key": "Dept",
-            "Value": "Rentals",
-            "Namespace": "Contact"
-          }
-        ]
-      },
       "Transitions": {
-        "NextAction": "InvokeLambda_Rentals"
-      }
-    },
-    {
-      "Identifier": "InvokeLambda_Rentals",
-      "Type": "InvokeLambdaFunction",
-      "Parameters": {
-        "FunctionArn": "arn:aws:lambda:us-east-1:605383993555:function:connect-call-audit",
-        "RequestJSON": "{\"ContactId\":\"{Contact.Attribute:ContactId}\",\"Dept\":\"{Attribute:Dept}\",\"Caller\":\"{Customer Number}\",\"Timestamp\":\"{CurrentTime}\"}"
-      },
-      "Transitions": {
-        "NextAction": "SetWorkingQueue_Rentals",
+        "NextAction": "25421eb7-02c3-4872-9aaa-b49920a1c54b",
         "Errors": [
           {
-            "NextAction": "SetWorkingQueue_Rentals",
+            "NextAction": "ErrorPrompt",
             "ErrorType": "NoMatchingError"
           }
         ]
       }
     },
     {
-      "Identifier": "SetWorkingQueue_Rentals",
-      "Type": "UpdateContactTargetQueue",
       "Parameters": {
         "QueueId": "arn:aws:connect:us-east-1:605383993555:instance/f06ec3c3-3254-46b5-88c6-02bbbfef8132/queue/250c10c8-91e3-4d3e-9b11-3f9fd07d9627"
       },
+      "Identifier": "a76b80ca-94f1-4b23-af27-4e5819b5f074",
+      "Type": "UpdateContactTargetQueue",
       "Transitions": {
-        "NextAction": "TransferToQueue_Rentals",
+        "NextAction": "TransferToSupport_Fleet",
         "Errors": [
           {
-            "NextAction": "Disconnect",
+            "NextAction": "ErrorPrompt",
             "ErrorType": "NoMatchingError"
           }
         ]
       }
     },
     {
-      "Identifier": "TransferToQueue_Rentals",
-      "Type": "TransferContactToQueue",
-      "Parameters": {},
-      "Transitions": {
-        "NextAction": "Disconnect",
-        "AtCapacity": "Disconnect",
-        "Error": "Disconnect"
-      }
-    },
-    {
+      "Parameters": {
+        "Attributes": {
+          "Dept": "Fleet"
+        },
+        "TargetContact": "Current"
+      },
       "Identifier": "SetDeptFleet",
       "Type": "UpdateContactAttributes",
-      "Parameters": {
-        "Attributes": [
-          {
-            "Key": "Dept",
-            "Value": "Fleet",
-            "Namespace": "Contact"
-          }
-        ]
-      },
       "Transitions": {
-        "NextAction": "InvokeLambda_Fleet"
-      }
-    },
-    {
-      "Identifier": "InvokeLambda_Fleet",
-      "Type": "InvokeLambdaFunction",
-      "Parameters": {
-        "FunctionArn": "arn:aws:lambda:us-east-1:605383993555:function:connect-call-audit",
-        "RequestJSON": "{\"ContactId\":\"{Contact.Attribute:ContactId}\",\"Dept\":\"{Attribute:Dept}\",\"Caller\":\"{Customer Number}\",\"Timestamp\":\"{CurrentTime}\"}"
-      },
-      "Transitions": {
-        "NextAction": "SetWorkingQueue_Fleet",
+        "NextAction": "a76b80ca-94f1-4b23-af27-4e5819b5f074",
         "Errors": [
           {
-            "NextAction": "SetWorkingQueue_Fleet",
+            "NextAction": "ErrorPrompt",
             "ErrorType": "NoMatchingError"
           }
         ]
       }
     },
     {
-      "Identifier": "SetWorkingQueue_Fleet",
-      "Type": "UpdateContactTargetQueue",
       "Parameters": {
         "QueueId": "arn:aws:connect:us-east-1:605383993555:instance/f06ec3c3-3254-46b5-88c6-02bbbfef8132/queue/250c10c8-91e3-4d3e-9b11-3f9fd07d9627"
       },
-      "Transitions": {
-        "NextAction": "TransferToQueue_Fleet",
-        "Errors": [
-          {
-            "NextAction": "Disconnect",
-            "ErrorType": "NoMatchingError"
-          }
-        ]
-      }
-    },
-    {
-      "Identifier": "TransferToQueue_Fleet",
-      "Type": "TransferContactToQueue",
-      "Parameters": {},
-      "Transitions": {
-        "NextAction": "Disconnect",
-        "AtCapacity": "Disconnect",
-        "Error": "Disconnect"
-      }
-    },
-    {
       "Identifier": "SetWorkingQueue_Main",
       "Type": "UpdateContactTargetQueue",
-      "Parameters": {
-        "QueueId": "arn:aws:connect:us-east-1:605383993555:instance/f06ec3c3-3254-46b5-88c6-02bbbfef8132/queue/250c10c8-91e3-4d3e-9b11-3f9fd07d9627"
-      },
       "Transitions": {
-        "NextAction": "TransferToQueue_Main",
+        "NextAction": "TransferToSupport_Main",
         "Errors": [
           {
-            "NextAction": "Disconnect",
+            "NextAction": "ErrorPrompt",
             "ErrorType": "NoMatchingError"
           }
         ]
       }
     },
     {
-      "Identifier": "TransferToQueue_Main",
-      "Type": "TransferContactToQueue",
       "Parameters": {},
+      "Identifier": "TransferToSupport_Rentals",
+      "Type": "TransferContactToQueue",
       "Transitions": {
-        "NextAction": "Disconnect",
-        "AtCapacity": "Disconnect",
-        "Error": "Disconnect"
+        "NextAction": "DisconnectCall",
+        "Errors": [
+          {
+            "NextAction": "TransferToSupport_Main",
+            "ErrorType": "QueueAtCapacity"
+          },
+          {
+            "NextAction": "DisconnectCall",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
       }
     },
     {
-      "Identifier": "Disconnect",
-      "Type": "DisconnectParticipant",
       "Parameters": {},
+      "Identifier": "TransferToSupport_Fleet",
+      "Type": "TransferContactToQueue",
+      "Transitions": {
+        "NextAction": "DisconnectCall",
+        "Errors": [
+          {
+            "NextAction": "TransferToSupport_Main",
+            "ErrorType": "QueueAtCapacity"
+          },
+          {
+            "NextAction": "DisconnectCall",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {},
+      "Identifier": "TransferToSupport_Main",
+      "Type": "TransferContactToQueue",
+      "Transitions": {
+        "NextAction": "DisconnectCall",
+        "Errors": [
+          {
+            "NextAction": "DisconnectCall",
+            "ErrorType": "QueueAtCapacity"
+          },
+          {
+            "NextAction": "DisconnectCall",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {},
+      "Identifier": "DisconnectCall",
+      "Type": "DisconnectParticipant",
       "Transitions": {}
+    },
+    {
+      "Parameters": {
+        "StoreInput": "True",
+        "InputTimeLimitSeconds": "7",
+        "Text": "Sorry, I didn’t catch that. Press 1 for Rentals, 2 for Fleet Support, or stay on the line for our main desk.",
+        "DTMFConfiguration": {
+          "DisableCancelKey": "False",
+          "InterdigitTimeLimitSeconds": "5"
+        },
+        "InputValidation": {
+          "CustomValidation": {
+            "MaximumLength": "20"
+          }
+        }
+      },
+      "Identifier": "RepromptMenu",
+      "Type": "GetParticipantInput",
+      "Transitions": {
+        "NextAction": "SetWorkingQueue_Main",
+        "Errors": [
+          {
+            "NextAction": "ErrorPrompt",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "Text": "We’re experiencing a temporary issue. Please hold while we connect you to our main desk."
+      },
+      "Identifier": "ErrorPrompt",
+      "Type": "MessageParticipant",
+      "Transitions": {
+        "NextAction": "TransferToSupport_Main",
+        "Errors": [
+          {
+            "NextAction": "DisconnectCall",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "StoreInput": "True",
+        "InputTimeLimitSeconds": "7",
+        "Text": "This is Enterprise Mobility, prepared by Edward Thornton for the CX Technology Engineer Interview. Press 1 for Rentals, 2 for Fleet Support, or stay on the line to connect to our main desk.",
+        "DTMFConfiguration": {
+          "DisableCancelKey": "False",
+          "InterdigitTimeLimitSeconds": "5"
+        },
+        "InputValidation": {
+          "CustomValidation": {
+            "MaximumLength": "20"
+          }
+        }
+      },
+      "Identifier": "IntroMenu",
+      "Type": "GetParticipantInput",
+      "Transitions": {
+        "NextAction": "S3 & Me",
+        "Errors": [
+          {
+            "NextAction": "ErrorPrompt",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "LambdaFunctionARN": "arn:aws:lambda:us-east-1:605383993555:function:connect-call-audit",
+        "InvocationTimeLimitSeconds": "8",
+        "InvocationType": "ASYNCHRONOUS",
+        "ResponseValidation": {
+          "ResponseType": "JSON"
+        }
+      },
+      "Identifier": "Lamda Or Die",
+      "Type": "InvokeLambdaFunction",
+      "Transitions": {
+        "NextAction": "RepromptMenu",
+        "Errors": [
+          {
+            "NextAction": "ErrorPrompt",
+            "ErrorType": "NoMatchingError"
+          }
+        ]
+      }
+    },
+    {
+      "Parameters": {
+        "VoiceBehavior": {
+          "VoiceRecordingBehavior": {
+            "RecordedParticipants": [
+              "Agent",
+              "Customer"
+            ],
+            "IVRRecordingBehavior": "Disabled"
+          },
+          "VoiceAnalyticsBehavior": {
+            "Enabled": "False"
+          }
+        }
+      },
+      "Identifier": "S3 & Me",
+      "Type": "UpdateContactRecordingAndAnalyticsBehavior",
+      "Transitions": {
+        "NextAction": "Lamda Or Die",
+        "Errors": [
+          {
+            "NextAction": "ErrorPrompt",
+            "ErrorType": "NoMatchingError"
+          },
+          {
+            "NextAction": "ErrorPrompt",
+            "ErrorType": "ChannelMismatch"
+          }
+        ]
+      }
     }
   ]
 }
