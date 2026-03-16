@@ -1,1 +1,1 @@
-Export your actual Amazon Connect flow as MainIVR.json and place it here.
+I updated the main IVR ... Added S3 or die recording Bucket
