@@ -5,6 +5,7 @@ A minimal Amazon Connect contact center with:
 - Routing to SupportQueue → agent softphone (CCP)
 - Real-time metrics for operations
 - Optional audit/orchestration via Lambda → DynamoDB
+- IVR call recording with recordings stored in Amazon S3
 
 ![Enterprise Connect Architecture](https://github.com/user-attachments/assets/a6376854-873a-4e53-a9f5-cfaff6f427cf)
 
@@ -39,8 +40,11 @@ project-enterprise-connect/
 6. Capture screenshots and place them in `architecture/`.
 7. Publish `site/` to S3 + CloudFront and replace **CLOUDFRONT_URL** above.
 
-## 📦 Coming Soon
-S3 Call Recording Storage & Playback
+## S3 Call Recording · Complete
+Call recording is enabled in the Amazon Connect IVR, with recordings stored in an Amazon S3 recording bucket.
+
+## Next Steps
+**Agentic AI through CX Designer**: extend the contact center with AI agents that understand caller requests, coordinate actions across connected services, and hand off to a live agent when needed.
 
 ## 🔗 Built With Pride  
 Created with ❤️ by **Edward Thornton**  
