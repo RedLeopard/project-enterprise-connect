@@ -1,188 +1,661 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Enterprise Connect Project | ET Portfolio</title>
-  <meta property="og:title" content="Enterprise Connect Project | ET Portfolio"/>
-  <meta property="og:description" content="Amazon Connect IVR with Lambda, DynamoDB, and S3"/>
-  <meta property="og:image" content="https://hireedwardthornton.click/assets/project.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enterprise Connect | Edward “E.T.” Thornton</title>
+  <!-- Project sharing preview -->
+  <link rel="canonical" href="https://hireedwardthornton.click/enterprise-connect.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Enterprise Connect | Edward “E.T.” Thornton" />
+  <meta property="og:description" content="An Amazon Connect IVR project linking voice flows to serverless AWS services." />
+  <meta property="og:url" content="https://hireedwardthornton.click/enterprise-connect.html" />
+  <meta property="og:site_name" content="Edward “E.T.” Thornton | Portfolio" />
+  <meta property="og:image" content="https://hireedwardthornton.click/assets/aws-enterprise-connect-cover-v2.png" />
+  <meta property="og:image:secure_url" content="https://hireedwardthornton.click/assets/aws-enterprise-connect-cover-v2.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:alt" content="Enterprise Connect: AWS Amazon Connect contact center with Lambda, DynamoDB, and S3" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Enterprise Connect | Edward “E.T.” Thornton" />
+  <meta name="twitter:description" content="An Amazon Connect IVR project linking voice flows to serverless AWS services." />
+  <meta name="twitter:image" content="https://hireedwardthornton.click/assets/aws-enterprise-connect-cover-v2.png" />
+  <meta name="twitter:image:alt" content="Enterprise Connect: AWS Amazon Connect contact center with Lambda, DynamoDB, and S3" />
+
+  
+  
+  
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
   <style>
-    *{margin:0;padding:0;box-sizing:border-box}
-    html{scroll-behavior:smooth;}
-    body{
-      font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
-      background:linear-gradient(to top right,#0b0c2a,#1f1f40);
-      color:#e0e0ff; min-height:100vh; overflow-x:hidden;
+    :root {
+      --bg: #080b09;
+      --panel: #101711;
+      --text: #f1f3e9;
+      --muted: #a2afa0;
+      --line: #ffffff19;
+      --lime: #c1fa6a;
+      --display: 'Space Grotesk', Arial, sans-serif;
+      --mono: 'Courier New', monospace
     }
-    header{padding:1rem 1rem 0; position:relative;
-      background-image:url('https://www.transparenttextures.com/patterns/stardust.png');}
-    .back-home{
-      position:absolute; left:1rem; top:1rem; display:flex; gap:.5rem;
-      align-items:center; text-decoration:none; color:#00f0ff; font-weight:700;
-      padding:.4rem .7rem; border:1px solid #00f0ff55; border-radius:10px;
-      transition:transform .2s ease, box-shadow .2s ease, background .2s;
-      background:rgba(255,255,255,0.03)}
-    .back-home:hover{ transform:translateY(-2px); box-shadow:0 0 12px #00f0ff55; }
-    .back-home svg{ width:18px; height:18px; }
-    .hero{padding:3rem 1.5rem 1rem; text-align:center;}
-    .hero h1{ font-size:2.6rem; color:#00f0ff; text-shadow:0 0 15px #00f0ff; }
-    .hero p{ margin-top:.6rem; color:#b0c4ff; font-size:1.1rem; }
-    .container{ max-width:1000px; margin:0 auto; padding:1.5rem; }
-    .section-title{ font-size:1.9rem; color:#fff; margin:1.5rem 0 1rem;
-      border-left:4px solid #00f0ff; padding-left:.75rem;}
-    .card{ background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
-      border-radius:12px; padding:1.3rem; transition:transform .3s ease, box-shadow .3s ease;}
-    .card:hover{ transform:translateY(-4px); box-shadow:0 0 15px #00f0ff55; }
-    .cover{ width:100%; border-radius:12px; margin:1rem 0; box-shadow:0 0 10px #00f0ff33;}
-    .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; }
-    @media (max-width:900px){ .grid-2{ grid-template-columns:1fr; } }
-    .pill{ display:inline-block; margin:.25rem .35rem 0 0; padding:.35rem .6rem;
-      border:1px solid #00f0ff55; border-radius:999px; color:#cfefff;
-      font-size:.85rem; background:rgba(255,255,255,.03); text-decoration:none;}
-    .btns{ display:flex; gap:.8rem; flex-wrap:wrap; margin-top:.8rem; }
-    .btn{ color:#0b0c2a; background:#00f0ff; border:none; font-weight:800;
-      padding:.6rem .9rem; border-radius:10px; text-decoration:none;}
-    .btn.secondary{ background:transparent; color:#00f0ff; border:1px solid #00f0ffaa; }
-    .arch-img{ width:100%; border-radius:10px; margin-top:.7rem; }
-    footer{ text-align:center; padding:2rem; color:#777; font-size:.85rem; }
-    .stars{ position:fixed; inset:0; z-index:-1; opacity:.1;
-      background:transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat; }
 
-    /* Metrics */
-    .metrics {
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-      gap:.8rem; margin-top:.8rem;
+    * {
+      box-sizing: border-box
     }
-    .metric {
-      background:rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.1);
-      border-radius:10px; padding:.75rem;
-    }
-    .metric .kpi { font-size:1.3rem; font-weight:800; color:#00f0ff; }
-    .metric .label { font-size:.85rem; color:#b0c4ff; }
-    .anchor-top { text-align:right; margin-top:.6rem; }
-    .anchor-top a { color:#00f0ff; text-decoration:none; font-size:.9rem; }
 
-    /* Gallery */
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 95px
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 15px 'DM Sans', Arial, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased
+    }
+
+    a {
+      color: var(--lime)
+    }
+
+    img {
+      max-width: 100%
+    }
+
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      opacity: .12;
+      background-image: radial-gradient(#d6f6b2 1px, transparent 1px), radial-gradient(#d6f6b2 1px, transparent 1px);
+      background-size: 97px 97px, 151px 151px;
+      background-position: 0 0, 45px 57px
+    }
+
+    .topbar {
+      position: relative;
+      z-index: 20;
+      border-bottom: 1px solid var(--line);
+      background: #080b09ed
+    }
+
+    .site-nav {
+      max-width: 1240px;
+      width: calc(100% - 64px);
+      height: 82px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+      font: 9px/1.5 var(--display);
+      letter-spacing: 1.2px;
+      flex-shrink: 0
+    }
+
+    .brand b {
+      font-size: 12px;
+      letter-spacing: 1.6px
+    }
+
+    .brand em {
+      font-style: normal;
+      color: var(--lime);
+      font-size: 11px
+    }
+
+    .brand b span {
+      color: var(--lime)
+    }
+
+    .alien-logo {
+      width: 27px;
+      height: 33px;
+      fill: var(--lime)
+    }
+
+    .site-nav nav {
+      display: flex;
+      align-items: center;
+      gap: 27px
+    }
+
+    .site-nav nav a {
+      font-size: 11px;
+      color: #bdc8b8;
+      text-decoration: none
+    }
+
+    .site-nav nav a:hover {
+      color: var(--lime)
+    }
+
+    .site-nav nav .nav-contact {
+      padding: 11px 14px;
+      border: 1px solid #c1fa6a55;
+      border-radius: 4px;
+      color: var(--lime)
+    }
+
+    .page-hero {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 82% 37%, #3d642a30, transparent 38%), linear-gradient(125deg, #0d150e, #080b09 64%);
+      border-bottom: 1px solid var(--line);
+      padding: 73px 32px 68px
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: .11;
+      background-image: linear-gradient(#b9e9991c 1px, transparent 1px), linear-gradient(90deg, #b9e9991c 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: linear-gradient(90deg, transparent, black)
+    }
+
+    .hero-inner {
+      max-width: 1160px;
+      margin: auto
+    }
+
+    .signal,
+    .eyebrow {
+      font: 8px var(--mono);
+      letter-spacing: 1.7px;
+      color: #a8ba9d
+    }
+
+    .signal {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 30px
+    }
+
+    .signal i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--lime);
+      box-shadow: 0 0 9px #b5ff64
+    }
+
+    .eyebrow {
+      color: var(--lime);
+      margin: 0 0 13px
+    }
+
+    .page-hero h1 {
+      font: 500 clamp(43px, 6vw, 72px)/1.05 var(--display);
+      letter-spacing: -3px;
+      margin: 0;
+      color: var(--text)
+    }
+
+    .page-hero h1 span {
+      color: var(--lime)
+    }
+
+    .hero-summary {
+      max-width: 700px;
+      color: #bdc8b9;
+      line-height: 1.8;
+      font-size: 15px;
+      margin: 17px 0 23px
+    }
+
+    .hero-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px
+    }
+
+    .hero-tech span {
+      font: 8px var(--mono);
+      letter-spacing: .6px;
+      padding: 7px 10px;
+      border: 1px solid #b8d89835;
+      background: #111811a8;
+      color: #c4d2b9;
+      border-radius: 3px
+    }
+
+    .container {
+      width: min(1160px, calc(100% - 64px));
+      max-width: none;
+      margin: auto;
+      padding: 58px 0 80px
+    }
+
+    .card {
+      background: linear-gradient(145deg, #111811, #0c100c);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: clamp(20px, 3vw, 34px);
+      margin-bottom: 22px;
+      box-shadow: none;
+      transition: border-color .2s
+    }
+
+    .card:hover {
+      transform: none;
+      box-shadow: none;
+      border-color: #c1fa6a35
+    }
+
+    .section-title {
+      font: 500 clamp(22px, 2.6vw, 30px)/1.2 var(--display);
+      letter-spacing: -.8px;
+      color: var(--text);
+      border: 0;
+      border-left: 2px solid var(--lime);
+      padding-left: 13px;
+      margin: 0 0 21px
+    }
+
+    .card h3 {
+      font: 500 19px var(--display);
+      color: var(--text);
+      margin: 26px 0 12px
+    }
+
+    .card p,
+    .card li {
+      color: var(--muted) !important;
+      line-height: 1.8 !important;
+      font-size: 13px
+    }
+
+    .card p+p {
+      margin-top: 13px
+    }
+
+    .card ul,
+    .card ol {
+      padding-left: 21px
+    }
+
+    .card li {
+      padding: 3px 0
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px
+    }
+
+    .pill {
+      display: inline-block;
+      margin: 5px 6px 0 0;
+      padding: 7px 10px;
+      border: 1px solid #c1fa6a42;
+      border-radius: 3px;
+      color: #c8d9bd;
+      background: #b9dd8210;
+      font: 8px var(--mono);
+      text-decoration: none
+    }
+
+    .btns {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      background: var(--lime);
+      color: #11190e;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 13px 16px;
+      border-radius: 4px;
+      text-decoration: none
+    }
+
+    .btn.secondary {
+      color: var(--text);
+      background: transparent;
+      border: 1px solid #c1fa6a55
+    }
+
+    .cover,
+    .arch-img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 5px;
+      margin: 14px 0;
+      background: #0b100c;
+      border: 1px solid var(--line);
+      box-shadow: none
+    }
+
+    .card iframe {
+      display: block;
+      width: 100%;
+      min-height: 400px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #0a100b;
+      margin: 15px 0
+    }
+
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: .9rem;
-      margin-top: .8rem;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 14px;
+      margin-top: 18px
     }
+
     .gallery figure {
       position: relative;
-      border-radius: 10px;
+      margin: 0;
+      border: 1px solid var(--line);
+      border-radius: 6px;
       overflow: hidden;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.1);
+      background: #0b100c
     }
+
     .gallery img {
       width: 100%;
-      height: 180px;
-      object-fit: cover;
+      height: 205px;
       display: block;
-      transition: transform .3s ease, filter .3s ease;
+      object-fit: contain;
       cursor: zoom-in;
+      background: #080c09;
+      transition: transform .2s
     }
+
     .gallery figure:hover img {
-      transform: scale(1.03);
-      filter: brightness(1.05);
+      transform: scale(1.025)
     }
+
     .gallery figcaption {
-      padding: .6rem .7rem;
-      font-size: .9rem;
-      color: #cfefff;
-      background: rgba(0,0,0,.35);
-      position: absolute;
-      left: 0; right: 0; bottom: 0;
-      backdrop-filter: blur(2px);
+      padding: 11px 13px;
+      color: #b7c7ac;
+      font-size: 10px;
+      line-height: 1.6;
+      border-top: 1px solid var(--line)
     }
-    .gallery .caption-top { bottom: auto; top: 0; }
 
-    /* Video */
     .video-wrapper {
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      margin:1.8rem 0;
-    }
-    .video-wrapper video {
-      width:90%;
-      max-width:900px;
-      border-radius:14px;
-      box-shadow:0 0 20px #00f0ff55;
-      outline:1px solid rgba(255,255,255,0.1);
-      background:#000;
+      margin: 22px 0
     }
 
-    /* Lightbox */
-    .lightbox {
-      position: fixed; inset: 0; display: none;
-      align-items: center; justify-content: center;
-      background: rgba(0,0,0,.75);
-      backdrop-filter: blur(2px);
-      z-index: 9999;
-    }
-    .lightbox.open { display: flex; }
-    .lightbox-content {
-      max-width: 92vw; max-height: 86vh;
-      position: relative;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 0 20px #00f0ff44;
-      background: #0b0c2a;
-    }
-    .lightbox img {
+    .video-wrapper video {
       display: block;
-      max-width: 92vw; max-height: 70vh;
-      width: auto; height: auto; object-fit: contain;
+      width: min(100%, 900px);
+      max-height: 72vh;
+      margin: auto;
+      border: 1px solid var(--line);
+      border-radius: 6px;
       background: #000;
+      box-shadow: 0 15px 50px #0008
     }
-    .lightbox .lb-caption {
-      padding: .8rem 1rem; color: #cfefff; font-size: .95rem;
-      border-top: 1px solid rgba(255,255,255,.1);
-      max-width: 92vw; max-height: 16vh; overflow:auto;
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 16px
     }
+
+    .metric {
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: #0b100c;
+      border-radius: 5px
+    }
+
+    .metric .kpi {
+      font: 500 22px var(--display);
+      color: var(--lime)
+    }
+
+    .metric .label {
+      display: block;
+      margin-top: 7px;
+      font-size: 10px;
+      line-height: 1.6;
+      color: var(--muted)
+    }
+
+    .anchor-top {
+      text-align: right;
+      margin-top: 17px
+    }
+
+    .anchor-top a {
+      font: 9px var(--mono);
+      color: var(--lime);
+      text-decoration: none
+    }
+
+    footer {
+      text-align: center;
+      border-top: 1px solid var(--line);
+      padding: 24px;
+      color: #899482;
+      font-size: 10px
+    }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      inset: 0;
+      background: #050806ed;
+      align-items: center;
+      justify-content: center;
+      padding: 25px
+    }
+
+    .lightbox.open {
+      display: flex
+    }
+
+    .lightbox-content {
+      position: relative;
+      max-width: min(1100px, 94vw);
+      max-height: 90vh;
+      display: grid;
+      place-items: center
+    }
+
+    .lightbox-content img {
+      max-width: 100%;
+      max-height: 78vh;
+      object-fit: contain;
+      border: 1px solid var(--line);
+      border-radius: 5px
+    }
+
+    .lb-close,
     .lb-btn {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      background: rgba(0,0,0,.45);
-      border: 1px solid rgba(255,255,255,.2);
-      color: #e0faff; padding: .5rem .7rem;
-      border-radius: 10px; cursor: pointer; user-select: none;
+      position: absolute;
+      border: 1px solid #c1fa6a55;
+      background: #0b100c;
+      color: var(--lime);
+      width: 39px;
+      height: 39px;
+      border-radius: 50%;
+      cursor: pointer
     }
-    .lb-prev { left: .6rem; }
-    .lb-next { right: .6rem; }
+
     .lb-close {
-      position: absolute; top: .6rem; right: .6rem;
-      background: rgba(0,0,0,.55);
-      border: 1px solid rgba(255,255,255,.2);
-      color: #e0faff; padding: .35rem .55rem;
-      border-radius: 10px; cursor: pointer; user-select: none;
+      right: -14px;
+      top: -14px
+    }
+
+    .lb-prev {
+      left: 12px;
+      top: 50%
+    }
+
+    .lb-next {
+      right: 12px;
+      top: 50%
+    }
+
+    .lb-caption {
+      padding-top: 12px;
+      color: #d1dccb;
+      font-size: 12px;
+      text-align: center
+    }
+
+    @media(max-width:760px) {
+      .site-nav {
+        width: calc(100% - 40px);
+        height: auto;
+        min-height: 76px;
+        align-items: flex-start;
+        padding: 16px 0;
+        flex-direction: column;
+        gap: 11px
+      }
+
+      .site-nav nav {
+        width: 100%;
+        gap: 16px;
+        flex-wrap: wrap
+      }
+
+      .site-nav nav a {
+        font-size: 10px
+      }
+
+      .site-nav nav .nav-contact {
+        padding: 7px 9px
+      }
+
+      .page-hero {
+        padding: 54px 20px 45px
+      }
+
+      .page-hero h1 {
+        letter-spacing: -2px
+      }
+
+      .container {
+        width: calc(100% - 40px);
+        padding: 38px 0 58px
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr
+      }
+
+      .card iframe {
+        min-height: 320px
+      }
+
+      .gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px
+      }
+
+      .gallery img {
+        height: 150px
+      }
+
+      .gallery figcaption {
+        font-size: 9px;
+        padding: 9px
+      }
+
+      .lightbox {
+        padding: 15px
+      }
+    }
+
+    @media(max-width:420px) {
+      .gallery {
+        grid-template-columns: 1fr
+      }
+
+      .gallery img {
+        height: 205px
+      }
+
+      .site-nav nav {
+        gap: 11px
+      }
+
+      .page-hero h1 {
+        font-size: 42px
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      html {
+        scroll-behavior: auto
+      }
+
+      *,
+      *:before,
+      *:after {
+        transition: none !important
+      }
     }
   </style>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 </head>
 
 <body id="top">
-  <div class="stars"></div>
-
-  <header>
-    <a class="back-home" href="index.html" aria-label="Back to Home">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 11l9-8 9 8" />
-        <path d="M9 22V12h6v10" />
-      </svg>
-      Home
-    </a>
-    <section class="hero">
-      <h1>Enterprise Connect Project</h1>
-      <p>Amazon Connect IVR • AWS Lambda • DynamoDB • S3</p>
-    </section>
+  <div class="stars" aria-hidden="true"></div>
+  <header class="topbar">
+    <div class="site-nav"><a class="brand" href="index.html" aria-label="Edward E.T. Thornton home"><svg
+          class="alien-logo" viewBox="0 0 40 46" aria-hidden="true">
+          <path d="M20 2C-8 2 1 30 20 44C39 30 48 2 20 2Z" />
+          <path d="M7 17Q20 17 16 29Q7 29 7 17M33 17Q20 17 24 29Q33 29 33 17" fill="#10160f" />
+        </svg><span>EDWARD <em>“E.T.”</em><br><b>THORNTON<span>.</span></b></span></a>
+      <nav aria-label="Portfolio navigation"><a href="index.html">Portfolio home</a><a
+          href="energy-transmission.html">Energy Transmission</a><a href="dialogflow-cx.html">Dialogflow CX</a><a href="ancestoriq.html">AncestorIQ</a><a
+          class="nav-contact" href="index.html#contact">Let’s talk ↗</a></nav>
+    </div>
   </header>
+  <section class="page-hero">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <p class="signal"><i></i> PROJECT FILE / E.T. PORTFOLIO</p>
+      <p class="eyebrow">CUSTOMER EXPERIENCE / SERVERLESS / CONTACT CENTER</p>
+      <h1>Enterprise Connect<span>.</span></h1>
+      <p class="hero-summary">An Amazon Connect IVR project linking voice flows to serverless AWS services.</p>
+      <div class="hero-tech"><span>Amazon Connect</span><span>AWS Lambda</span><span>DynamoDB</span><span>Amazon
+          S3</span><span>CloudWatch</span></div>
+    </div>
+  </section>
 
-  <main class="container">
+
+
+
+  <main class="container" id="main">
     <section class="card">
       <h2 class="section-title">Overview</h2>
       <p style="color:#c6c6f5; line-height:1.7;">
@@ -191,7 +664,7 @@
         <strong>DynamoDB</strong>, and persists recordings/metadata to <strong>S3</strong>.
         It’s designed for interview-ready demos and real-world starter deployments with a secure,
         testable, and extensible architecture. <br><br>
-        <strong>Call and test the live contact center demo</strong> at 
+        <strong>Call and test the live contact center demo</strong> at
         <a href="tel:+18335092100" style="color:#00f0ff; text-decoration:none; font-weight:600;">
           +1 (833) 509-2100
         </a>
@@ -203,10 +676,11 @@
         <a class="pill" href="#metrics">Metrics</a>
       </div>
       <div class="btns">
-        <a class="btn" href="https://github.com/RedLeopard/project-enterprise-connect" target="_blank" rel="noopener">View Repository</a>
+        <a class="btn" href="https://github.com/RedLeopard/project-enterprise-connect" target="_blank"
+          rel="noopener">View Repository</a>
         <a class="btn secondary" href="index.html">← Back to Home</a>
       </div>
-       </div>
+      </div>
     </section>
     <section class="grid-2" style="margin-top:1.2rem;">
       <div class="card">
@@ -226,7 +700,7 @@
           Left-to-right flow: Customer → Amazon Connect → Lambda → DynamoDB &amp; S3 → Agent Queue.
         </p>
         <img class="arch-img" alt="Enterprise Connect Architecture"
-             src="https://github.com/user-attachments/assets/a6376854-873a-4e53-a9f5-cfaff6f427cf"/>
+          src="assets/connect-architecture.svg" />
       </div>
     </section>
     </section>
@@ -235,20 +709,23 @@
     <section class="card" id="amazon-connect" style="margin-top:1.2rem;">
       <h2 class="section-title">Amazon Connect</h2>
       <p style="color:#c6c6f5;line-height:1.7;">
-        This <strong>Amazon Connect IVR</strong> was developed as part of my <strong>Enterprise CX Technology Engineer interview project</strong>, 
-        demonstrating advanced customer experience design and AWS integration skills. 
-        The IVR flow intelligently routes callers using <strong>DTMF-based logic</strong> and invokes <strong>AWS Lambda</strong> functions 
-        to determine routing outcomes and data persistence in <strong>DynamoDB</strong>.
+        I built this <strong>Amazon Connect IVR</strong> as a portfolio project to demonstrate my customer experience
+        design and AWS integration skills during interviews.
+        Callers navigate the menu using their phone keypad, with <strong>DTMF-based logic</strong> directing them
+        through the call flow.
+        The IVR invokes <strong>AWS Lambda</strong> functions to determine routing outcomes and saves data in
+        <strong>DynamoDB</strong>.
+        The project shows how I connect these AWS services to build a working call routing solution.
       </p>
 
       <div class="gallery" data-gallery="amazon-connect">
         <figure>
           <img src="assets/connect.png" alt="Amazon Connect configuration console" loading="lazy" />
-          <figcaption>Amazon Connect — Call Center Configuration</figcaption>
+          <figcaption>Amazon Connect · Call Center Configuration</figcaption>
         </figure>
         <figure>
           <img src="assets/MainIVR.png" alt="Main IVR contact flow with Lambda integration" loading="lazy" />
-          <figcaption>Main IVR Flow — Lambda-Integrated Routing</figcaption>
+          <figcaption>Main IVR Flow · Lambda-Integrated Routing</figcaption>
         </figure>
         <figure>
           <img src="assets/que.png" alt="Agent 1 queue setup" loading="lazy" />
@@ -256,27 +733,35 @@
         </figure>
       </div>
 
-      <h3 style="color:#00f0ff; margin-top:1rem;">Live Call Demonstration — Amazon Connect → Agent 1</h3>
+      <h3 style="color:#00f0ff; margin-top:1rem;">Live Call Demonstration · Amazon Connect → Agent 1</h3>
       <div class="video-wrapper">
-  <video autoplay loop muted playsinline poster="assets/project.png">
-    <source src="assets/Video Demo.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-</div>
-
+        <video autoplay loop muted playsinline poster="assets/project.png">
+          <source src="assets/enterprise-connect-demo.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
 
       <p style="color:#c6c6f5; line-height:1.7;">
-        This clip shows a real inbound call traversing the <strong>Amazon Connect IVR</strong> flow. 
-        When a DTMF option is selected, <strong>AWS Lambda</strong> is invoked to process the input, 
-        update <strong>DynamoDB</strong> with session details, and route the call dynamically to the 
-        <strong>Agent 1 queue</strong>. The video confirms Lambda execution, IVR traversal, and 
+        This clip shows a real inbound call traversing the <strong>Amazon Connect IVR</strong> flow.
+        When a DTMF option is selected, <strong>AWS Lambda</strong> is invoked to process the input,
+        update <strong>DynamoDB</strong> with session details, and route the call dynamically to the
+        <strong>Agent 1 queue</strong>. The video confirms Lambda execution, IVR traversal, and
         a successful <strong>Connect-to-Agent transfer</strong>.
       </p>
 
       <div class="metrics">
-        <div class="metric"><div class="kpi">72%</div><div class="label">IVR Containment</div></div>
-        <div class="metric"><div class="kpi">10s</div><div class="label">Avg Queue Wait</div></div>
-        <div class="metric"><div class="kpi">100%</div><div class="label">Call Success</div></div>
+        <div class="metric">
+          <div class="kpi">72%</div>
+          <div class="label">IVR Containment</div>
+        </div>
+        <div class="metric">
+          <div class="kpi">10s</div>
+          <div class="label">Avg Queue Wait</div>
+        </div>
+        <div class="metric">
+          <div class="kpi">100%</div>
+          <div class="label">Call Success</div>
+        </div>
       </div>
     </section>
 
@@ -284,20 +769,34 @@
     <section class="card" id="aws-lambda" style="margin-top:1.2rem;">
       <h2 class="section-title">AWS Lambda</h2>
       <p style="color:#c6c6f5;line-height:1.7;">
-        AWS Lambda functions act as the decision engine — executing IVR menu logic, validating inputs, and securely writing to DynamoDB and S3 for persistent data logging and analytics.
+        AWS Lambda functions act as the decision engine · executing IVR menu logic, validating inputs, and securely
+        writing to DynamoDB and S3 for persistent data logging and analytics.
       </p>
       <div style="text-align:center; margin-top:1rem;">
         <figure style="display:inline-block; max-width:90%; text-align:center;">
           <img src="assets/lambda.png" alt="Lambda handler code for routing logic" loading="lazy"
             style="max-width:100%; border-radius:12px; box-shadow:0 0 15px #00f0ff44; margin-bottom:.5rem;">
-          <figcaption style="color:#cfefff; font-size:.9rem;">Lambda function implementing routing logic and DynamoDB writes</figcaption>
+          <figcaption style="color:#cfefff; font-size:.9rem;">Lambda function implementing routing logic and DynamoDB
+            writes</figcaption>
         </figure>
       </div>
       <div class="metrics">
-        <div class="metric"><div class="kpi">92 ms</div><div class="label">p95 Duration</div></div>
-        <div class="metric"><div class="kpi">0.1%</div><div class="label">Error Rate</div></div>
-        <div class="metric"><div class="kpi">3</div><div class="label">Cold Starts / hr</div></div>
-        <div class="metric"><div class="kpi">128 MB</div><div class="label">Memory Config</div></div>
+        <div class="metric">
+          <div class="kpi">92 ms</div>
+          <div class="label">p95 Duration</div>
+        </div>
+        <div class="metric">
+          <div class="kpi">0.1%</div>
+          <div class="label">Error Rate</div>
+        </div>
+        <div class="metric">
+          <div class="kpi">3</div>
+          <div class="label">Cold Starts / hr</div>
+        </div>
+        <div class="metric">
+          <div class="kpi">128 MB</div>
+          <div class="label">Memory Config</div>
+        </div>
       </div>
     </section>
 
@@ -305,7 +804,9 @@
     <section class="card" id="dynamodb" style="margin-top:1.2rem;">
       <h2 class="section-title">DynamoDB</h2>
       <p style="color:#c6c6f5;line-height:1.7;">
-        <strong>Amazon DynamoDB</strong> stores IVR session data and call audit events. Each item is keyed by <code>callId</code> with a time-based sort key for quick lookups. A GSI enables analytics by phone number/date, while TTL automates data cleanup. All entries are KMS-encrypted with IAM-restricted access.
+        <strong>Amazon DynamoDB</strong> stores IVR session data and call audit events. Each item is keyed by
+        <code>callId</code> with a time-based sort key for quick lookups. A GSI enables analytics by phone number/date,
+        while TTL automates data cleanup. All entries are KMS-encrypted with IAM-restricted access.
       </p>
       <div style="text-align:center; margin-top:1rem;">
         <figure style="display:inline-block; max-width:90%; text-align:center;">
@@ -315,10 +816,22 @@
         </figure>
       </div>
       <div class="metrics">
-        <div class="metric"><div class="kpi">0</div><div class="label">Throttles</div></div>
-        <div class="metric"><div class="kpi">2.1 ms</div><div class="label">p95 Read Latency</div></div>
-        <div class="metric"><div class="kpi">50 / 25</div><div class="label">RCU / WCU</div></div>
-        <div class="metric"><div class="kpi">99.99%</div><div class="label">Data Availability</div></div>
+        <div class="metric">
+          <div class="kpi">0</div>
+          <div class="label">Throttles</div>
+        </div>
+        <div class="metric">
+          <div class="kpi">2.1 ms</div>
+          <div class="label">p95 Read Latency</div>
+        </div>
+        <div class="metric">
+          <div class="kpi">50 / 25</div>
+          <div class="label">RCU / WCU</div>
+        </div>
+        <div class="metric">
+          <div class="kpi">99.99%</div>
+          <div class="label">Data Availability</div>
+        </div>
       </div>
     </section>
 
@@ -326,32 +839,119 @@
     <section class="card" id="metrics" style="margin-top:1.2rem;">
       <h2 class="section-title">Metrics</h2>
       <p style="color:#c6c6f5; line-height:1.7;">
-        Amazon Connect metrics highlight call routing efficiency and stability — 72% containment, 10-second average queue time, and 100% call success indicate a well-optimized and fault-tolerant setup.
+        Amazon Connect metrics highlight call routing efficiency and stability · 72% containment, 10-second average
+        queue time, and 100% call success indicate a well-optimized and fault-tolerant setup.
       </p>
       <div style="text-align:center; margin-top:1rem;">
         <figure style="display:inline-block; max-width:90%; text-align:center;">
           <img src="assets/metrics.png" alt="Amazon Connect metrics dashboard visualization" loading="lazy"
             style="max-width:100%; border-radius:12px; box-shadow:0 0 15px #00f0ff44; margin-bottom:.5rem;">
-          <figcaption>Amazon Connect metrics dashboard — IVR containment, latency, and call success</figcaption>
+          <figcaption>Amazon Connect metrics dashboard · IVR containment, latency, and call success</figcaption>
         </figure>
       </div>
       <div class="metrics">
-        <div class="metric"><div class="kpi">1</div><div class="label">Active Alarms</div></div>
-        <div class="metric"><div class="kpi">99.9%</div><div class="label">Uptime Last 30d</div></div>
-        <div class="metric"><div class="kpi">0.2%</div><div class="label">IVR Error Rate</div></div>
-        <div class="metric"><div class="kpi">3</div><div class="label">Dashboards</div></div>
+        <div class="metric">
+          <div class="kpi">1</div>
+          <div class="label">Active Alarms</div>
+        </div>
+        <div class="metric">
+          <div class="kpi">99.9%</div>
+          <div class="label">Uptime Last 30d</div>
+        </div>
+        <div class="metric">
+          <div class="kpi">0.2%</div>
+          <div class="label">IVR Error Rate</div>
+        </div>
+        <div class="metric">
+          <div class="kpi">3</div>
+          <div class="label">Dashboards</div>
+        </div>
       </div>
     </section>
 
     <section class="card" style="margin-top:1.2rem;">
-      <h2 class="section-title">Coming Soon</h2>
+      <h2 class="section-title">S3 Call Recording · Complete</h2>
       <p style="color:#c6c6f5; line-height:1.7;">
-        <strong>S3 Call Recording Storage &amp; Playback</strong> — automatic uploads with KMS encryption,
-        lifecycle to Glacier, and a secure playback console for authorized agents.
+        Call recording is enabled in the Amazon Connect IVR, with recordings stored in an
+        <strong>Amazon S3 recording bucket</strong>.
+      </p>
+    </section>
+
+    <section class="card" style="margin-top:1.2rem;">
+      <h2 class="section-title">Next Steps</h2>
+      <p style="color:#c6c6f5; line-height:1.7;">
+        <strong>Agentic AI through CX Designer</strong> · extend the contact center with AI agents
+        that understand caller requests, coordinate actions across connected services, and hand off
+        to a live agent when needed.
       </p>
     </section>
   </main>
 
-  <footer>&copy; 2025 Edward Thornton — Built from beyond 🌌</footer>
+  <footer>&copy; 2026 Edward “E.T.” Thornton · Built on Earth.</footer>
+
+  <!-- Lightbox container -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-content">
+      <button class="lb-close" id="lb-close">✕</button>
+      <button class="lb-btn lb-prev" id="lb-prev">←</button>
+      <img id="lb-img"  alt="">
+      <button class="lb-btn lb-next" id="lb-next">→</button>
+      <div class="lb-caption" id="lb-caption"></div>
+    </div>
+  </div>
+
+  <!-- Lightbox script -->
+  <script>
+    const lightbox = document.getElementById("lightbox");
+    const lbImg = document.getElementById("lb-img");
+    const lbCaption = document.getElementById("lb-caption");
+    const prevBtn = document.getElementById("lb-prev");
+    const nextBtn = document.getElementById("lb-next");
+    const closeBtn = document.getElementById("lb-close");
+
+    let galleryImages = [];
+    let currentIndex = 0;
+
+    document.querySelectorAll(".gallery img").forEach((img, index) => {
+      galleryImages.push({
+        src: img.src,
+        caption: img.parentElement.querySelector("figcaption")?.innerText || ""
+      });
+
+      img.addEventListener("click", () => {
+        currentIndex = index;
+        openLightbox();
+      });
+    });
+
+    function openLightbox() {
+      lbImg.src = galleryImages[currentIndex].src;
+      lbCaption.innerText = galleryImages[currentIndex].caption;
+      lightbox.classList.add("open");
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove("open");
+    }
+
+    closeBtn.addEventListener("click", closeLightbox);
+
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    prevBtn.addEventListener("click", () => {
+      currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+      openLightbox();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      currentIndex = (currentIndex + 1) % galleryImages.length;
+      openLightbox();
+    });
+  </script>
 </body>
+
 </html>
